@@ -4,16 +4,9 @@ import java.util.Random;
 import tddmicroexercises.telemetrysystem.services.Client;
 
 public class ClientImpl implements Client {
-    private static boolean onlineStatus;
+
     private static String diagnosticMessageResult = "";
     private Random connectionEventsSimulator = new Random(42L);
-
-    public ClientImpl() {
-    }
-
-    public boolean getOnlineStatus() {
-        return onlineStatus;
-    }
 
     public void send(String message) {
         if (message != null && !"".equals(message)) {

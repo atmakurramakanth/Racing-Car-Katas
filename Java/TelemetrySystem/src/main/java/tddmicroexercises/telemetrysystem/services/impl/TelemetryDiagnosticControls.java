@@ -7,10 +7,12 @@ public class TelemetryDiagnosticControls implements DiagnosticsControls {
     private String diagnosticInfo = "";
     private final ClientImpl client;
     private final ConnectionImpl connection;
+    private OnlineStatusImpl onlineStatus;
 
-    public TelemetryDiagnosticControls(ClientImpl client, ConnectionImpl connection) {
+    public TelemetryDiagnosticControls(ClientImpl client, ConnectionImpl connection,OnlineStatusImpl onlineStatus) {
         this.client = client;
         this.connection = connection;
+        this.onlineStatus = onlineStatus;
     }
 
     public String getDiagnosticInfo() {
@@ -25,11 +27,11 @@ public class TelemetryDiagnosticControls implements DiagnosticsControls {
         this.diagnosticInfo = "";
         this.connection.disconnect();
 
-        for(int retryLeft = 3; !this.client.getOnlineStatus() && retryLeft > 0; --retryLeft) {
+        for(int retryLeft = 3; !this.onlineStatus.getOnlineStatus() && retryLeft > 0; --retryLeft) {
             this.connection.connect("*111#");
         }
 
-        if (!this.client.getOnlineStatus()) {
+        if (!this.onlineStatus.getOnlineStatus()) {
             throw new Exception("Unable to connect.");
         } else {
             this.client.send("AT#UD");
